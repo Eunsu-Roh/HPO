@@ -1,0 +1,182 @@
+# MNIST Hyperparameter Optimization Experiment Configuration
+
+experiment:
+  name: "mnist_hpo_comparison"
+  seed: 42
+  save_dir: "results"
+  timeout: 18000  # 5 hours in seconds
+  save_all_checkpoints: true  # Save all 12 combination models
+
+data:
+  dataset: "mnist"
+  train_ratio: 0.7  # 42,000 samples
+  val_ratio: 0.15   # 9,000 samples
+  test_ratio: 0.15  # 9,000 samples
+  normalize: true
+  random_state: 42
+
+# Execution order: RandomForest -> XGBoost -> CNN
+# Within each model: Random Search -> Optuna -> Bayesian -> Grid Search
+execution_order:
+  - model: "random_forest"
+    hpo_methods: ["random_search", "optuna", "bayesian_optimization", "grid_search"]
+  - model: "xgboost"
+    hpo_methods: ["random_search", "optuna", "bayesian_optimization", "grid_search"]
+  - model: "cnn"
+    hpo_methods: ["random_search", "optuna", "bayesian_optimization", "grid_search"]
+
+models:
+  cnn:
+    enabled: true
+    input_shape: [28, 28, 1]
+    num_classes: 10
+    
+  random_forest:
+    enabled: true
+    num_classes: 10
+    
+  xgboost:
+    enabled: true
+    num_classes: 10
+    objective: "multi:softmax"
+
+hpo_methods:
+  grid_search:
+    enabled: true
+    cv_folds: 3
+    n_jobs: 4  # CPU 과부하 방지 (12코어의 33%)
+    verbose: 2
+    
+  random_search:
+    enabled: true
+    n_iter: 100
+    cv_folds: 3
+    n_jobs: 4  # CPU 과부하 방지 (12코어의 33%)
+    random_state: 42
+    verbose: 2
+    
+  bayesian_optimization:
+    enabled: true
+    n_iter: 50
+    cv_folds: 3
+    n_jobs: 1
+    random_state: 42
+    verbose: 2
+    
+  optuna:
+    enabled: true
+    n_trials: 100
+    timeout_per_trial: 1200  # 20 minutes per combination
+    pruning: true
+    random_state: 42
+    n_jobs: 1
+
+# Hyperparameter search spaces (reduced for Grid Search)
+hyperparameters:
+  cnn:
+    grid_search:
+      learning_rate: [0.001, 0.005]
+      epochs: [10, 20]
+      batch_size: [64, 128]
+      dropout_rate: [0.3, 0.4]
+      num_conv_layers: [2, 3]
+      
+    random_search:
+      learning_rate: [0.0001, 0.01]  # log-uniform range
+      epochs: [10, 30]
+      batch_size: [32, 64, 128, 256]
+      dropout_rate: [0.2, 0.5]
+      num_conv_layers: [2, 3, 4]
+      dense_units: [64, 128, 256, 512]
+      
+    bayesian_optimization:
+      learning_rate: [0.0001, 0.01]  # log-uniform
+      epochs: [10, 30]
+      batch_size: [32, 256]
+      dropout_rate: [0.2, 0.5]
+      num_conv_layers: [2, 4]
+      dense_units: [64, 512]
+      
+    optuna:
+      learning_rate: [0.0001, 0.01]  # log-uniform
+      epochs: [10, 30]
+      batch_size: [32, 64, 128, 256]
+      dropout_rate: [0.2, 0.5]
+      num_conv_layers: [2, 3, 4]
+      dense_units: [64, 128, 256, 512]
+      
+  random_forest:
+    grid_search:
+      n_estimators: [100, 200]
+      max_depth: [20, 30]
+      min_samples_split: [2, 5]
+      
+    random_search:
+      n_estimators: [50, 500]
+      max_depth: [10, 50]
+      min_samples_split: [2, 20]
+      min_samples_leaf: [1, 8]
+      max_features: ["sqrt", "log2"]
+      
+    bayesian_optimization:
+      n_estimators: [50, 500]
+      max_depth: [10, 50]
+      min_samples_split: [2, 20]
+      min_samples_leaf: [1, 8]
+      
+    optuna:
+      n_estimators: [50, 500]
+      max_depth: [10, 50]
+      min_samples_split: [2, 20]
+      min_samples_leaf: [1, 8]
+      max_features: ["sqrt", "log2"]
+      
+  xgboost:
+    grid_search:
+      learning_rate: [0.05, 0.1]
+      max_depth: [5, 7]
+      n_estimators: [100, 200]
+      
+    random_search:
+      learning_rate: [0.01, 0.3]
+      max_depth: [3, 11]
+      n_estimators: [50, 500]
+      subsample: [0.6, 1.0]
+      colsample_bytree: [0.6, 1.0]
+      gamma: [0, 0.5]
+      
+    bayesian_optimization:
+      learning_rate: [0.01, 0.3]
+      max_depth: [3, 11]
+      n_estimators: [50, 500]
+      subsample: [0.6, 1.0]
+      colsample_bytree: [0.6, 1.0]
+      
+    optuna:
+      learning_rate: [0.01, 0.3]
+      max_depth: [3, 11]
+      n_estimators: [50, 500]
+      subsample: [0.6, 1.0]
+      colsample_bytree: [0.6, 1.0]
+      gamma: [0, 0.5]
+      min_child_weight: [1, 7]
+      reg_alpha: [0, 10]
+      reg_lambda: [0, 10]
+
+evaluation:
+  metrics:
+    - accuracy
+    - precision_macro
+    - precision_weighted
+    - recall_macro
+    - recall_weighted
+    - f1_macro
+    - f1_weighted
+  track_time: true
+  save_confusion_matrix: true
+  
+logging:
+  level: "INFO"
+  save_logs: true
+  log_dir: "results/logs"
+  console_output: true

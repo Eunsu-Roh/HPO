@@ -1,0 +1,82 @@
+================================================================================
+MNIST HYPERPARAMETER OPTIMIZATION EXPERIMENT SUMMARY
+================================================================================
+Generated: 2025-11-30 15:44:46
+================================================================================
+
+OVERALL STATISTICS
+--------------------------------------------------------------------------------
+Total Experiments:     12
+Average Accuracy:      0.9789
+Best Accuracy:         0.9933
+Total Time:            62948.88s (17.49h)
+
+BEST RESULT
+--------------------------------------------------------------------------------
+Model:                 cnn
+HPO Method:            grid_search
+Test Accuracy:         0.9933
+CV Score:              0.9932
+Search Time:           253.72s
+F1 Score (macro):      0.9933
+Precision (macro):     0.9933
+Recall (macro):        0.9933
+Best Parameters:
+  model_params: {'num_conv_layers': 3, 'dropout_rate': 0.3}
+  learning_rate: 0.001
+  batch_size: 64
+  epochs: 20
+
+SUMMARY BY HPO METHOD
+--------------------------------------------------------------------------------
+                      test_accuracy                         search_time                                   
+                               mean     std     max     min        mean         std        min         max
+hpo_method                                                                                                
+bayesian_optimization        0.9801  0.0116  0.9910  0.9679  12991.2041  21380.4463   618.5248  37679.1947
+grid_search                  0.9792  0.0128  0.9933  0.9684    622.4936    810.7174    61.7152   1552.0426
+optuna                       0.9776  0.0127  0.9920  0.9679   1304.4111    162.3476  1209.0819   1491.8647
+random_search                0.9789  0.0132  0.9922  0.9657   6064.8503   9033.7828   816.7591  16496.0968
+
+SUMMARY BY MODEL
+--------------------------------------------------------------------------------
+              test_accuracy                         search_time                                   
+                       mean     std     max     min        mean         std        min         max
+model                                                                                             
+cnn                  0.9921  0.0009  0.9933  0.9910    740.7562    404.6952   253.7230   1209.0819
+random_forest        0.9675  0.0012  0.9684  0.9657    691.6634    477.4169    61.7152   1212.2866
+xgboost              0.9772  0.0036  0.9812  0.9729  14304.7997  17107.1938  1491.8647  37679.1947
+
+DETAILED RESULTS
+--------------------------------------------------------------------------------
+        model            hpo_method  test_accuracy  best_cv_score  search_time
+          cnn           grid_search       0.993333       0.993238   253.723015
+          cnn         random_search       0.992190       0.992762   881.695064
+          cnn                optuna       0.992000       0.992476  1209.081867
+          cnn bayesian_optimization       0.991048       0.990000   618.524810
+      xgboost bayesian_optimization       0.981238       0.977092 37679.194720
+      xgboost         random_search       0.978857       0.975479 16496.096770
+      xgboost           grid_search       0.975810       0.973193  1552.042564
+      xgboost                optuna       0.972857       0.970185  1491.864727
+random_forest           grid_search       0.968381       0.967109    61.715233
+random_forest                optuna       0.967905       0.967782  1212.286569
+random_forest bayesian_optimization       0.967905       0.967731   675.892668
+random_forest         random_search       0.965714       0.965429   816.759090
+
+RANKINGS
+--------------------------------------------------------------------------------
+
+Top 5 by Test Accuracy:
+  1. cnn             - grid_search               Acc: 0.9933  Time:   253.72s
+  2. cnn             - random_search             Acc: 0.9922  Time:   881.70s
+  3. cnn             - optuna                    Acc: 0.9920  Time:  1209.08s
+  4. cnn             - bayesian_optimization     Acc: 0.9910  Time:   618.52s
+  5. xgboost         - bayesian_optimization     Acc: 0.9812  Time: 37679.19s
+
+Top 5 by Efficiency (Accuracy / log(Time)):
+  1. random_forest   - grid_search               Acc: 0.9684  Time:    61.72s  Eff: 0.1233
+  2. cnn             - grid_search               Acc: 0.9933  Time:   253.72s  Eff: 0.0624
+  3. cnn             - bayesian_optimization     Acc: 0.9910  Time:   618.52s  Eff: 0.0398
+  4. random_forest   - bayesian_optimization     Acc: 0.9679  Time:   675.89s  Eff: 0.0372
+  5. random_forest   - random_search             Acc: 0.9657  Time:   816.76s  Eff: 0.0338
+
+================================================================================
