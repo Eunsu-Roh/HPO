@@ -1,4 +1,3 @@
-```markdown
 # MNIST Hyperparameter Optimization (HPO) Comparison
 
 ## 📋 Project Overview
@@ -19,34 +18,34 @@ An experimental project comparing various hyperparameter optimization techniques
   - RandomForest: n_estimators, max_depth, min_samples_split
   - XGBoost: max_depth, subsample, colsample_bytree, regularization
 
+---
+
 ## 🏗️ Project Structure
 
-
-```
-
+```text
 HPO/
 ├── config/
 │   └── hpo_config.yaml          # Experiment config file
 ├── data/
-│   ├── **init**.py
+│   ├── __init__.py
 │   └── data_loader.py           # MNIST data loader
 ├── models/
-│   ├── **init**.py
+│   ├── __init__.py
 │   ├── cnn_model.py             # CNN model builder
 │   ├── random_forest_model.py   # RandomForest model builder
 │   └── xgboost_model.py         # XGBoost model builder
 ├── hpo/
-│   ├── **init**.py
+│   ├── __init__.py
 │   ├── grid_search.py           # Grid Search implementation
 │   ├── random_search.py         # Random Search implementation
 │   ├── bayesian_optimization.py # Bayesian Optimization implementation
 │   └── optuna_optimizer.py      # Optuna implementation
 ├── experiments/
-│   ├── **init**.py
+│   ├── __init__.py
 │   ├── experiment_tracker.py    # Experiment result tracker
 │   └── experiment_runner.py     # Experiment execution pipeline
 ├── evaluation/
-│   ├── **init**.py
+│   ├── __init__.py
 │   ├── metrics.py               # Evaluation metrics
 │   └── visualizer.py            # Visualization
 ├── results/
@@ -56,27 +55,26 @@ HPO/
 ├── requirements.txt             # Package dependencies
 ├── main.py                      # Main execution script
 └── README.md                    # Project documentation (this file)
-
 ```
+
+---
 
 ## 🚀 Installation
 
 ### 1. Python Environment Setup
 Requires Python 3.8 or higher.
 
-```powershell
+```bash
 # Create a virtual environment (optional)
 python -m venv venv
-.\venv\Scripts\Activate.ps1
+source venv/bin/activate  # On Windows: .\venv\Scripts\Activate.ps1
 
 # Install packages
 pip install -r requirements.txt
-
 ```
 
 ### 2. Required Packages
-
-```
+```text
 numpy>=1.21.0
 scikit-learn>=1.0.0
 torch>=2.0.0
@@ -90,31 +88,28 @@ plotly>=5.10.0
 pyyaml>=6.0
 pandas>=1.4.0
 tqdm>=4.64.0
-
 ```
+
+---
 
 ## 💻 Usage
 
 ### Run Full Experiment
-
-```powershell
+```bash
 python main.py
-
 ```
 
 ### Customize Configuration File
-
-```powershell
+```bash
 python main.py --config custom_config.yaml
-
 ```
 
 ### Regenerate Visualizations Only (Skip experiments)
-
-```powershell
+```bash
 python main.py --skip-experiments
-
 ```
+
+---
 
 ## ⚙️ Experiment Configuration
 
@@ -135,155 +130,142 @@ execution_order:
     hpo_methods: ["random_search", "optuna", "bayesian_optimization", "grid_search"]
   - model: "cnn"
     hpo_methods: ["random_search", "optuna", "bayesian_optimization", "grid_search"]
-
 ```
+
+---
 
 ## 📊 Experiment Results
 
 After the experiment is completed, the following files will be generated in the `results/` directory:
 
 ### 1. Result Files
-
-* `experiment_results.json`: Overall results (JSON format)
-* `experiment_results.csv`: Overall results (CSV format)
-* `summary_report.txt`: Summary report
+- `experiment_results.json`: Overall results (JSON format)
+- `experiment_results.csv`: Overall results (CSV format)
+- `summary_report.txt`: Summary report
 
 ### 2. Visualizations
-
 `results/plots/` directory:
-
-* `accuracy_vs_time.png`: Scatter plot of Accuracy vs Search Time
-* `model_hpo_comparison.png`: Bar chart comparing performance by model and HPO
-* `confusion_matrices.png`: Confusion matrices of the best performing models (3 in total)
-* `optuna_histories.png`: Optuna optimization history (3 in total)
+- `accuracy_vs_time.png`: Scatter plot of Accuracy vs Search Time
+- `model_hpo_comparison.png`: Bar chart comparing performance by model and HPO
+- `confusion_matrices.png`: Confusion matrices of the best performing models (3 in total)
+- `optuna_histories.png`: Optuna optimization history (3 in total)
 
 ### 3. Model Checkpoints
-
 `results/checkpoints/` directory:
-
-* `random_forest_grid_search.pkl`
-* `random_forest_random_search.pkl`
-* `random_forest_bayesian_optimization.pkl`
-* `random_forest_optuna.pkl`
-* `xgboost_grid_search.pkl`
-* ... (12 models in total)
+- `random_forest_grid_search.pkl`
+- `random_forest_random_search.pkl`
+- `random_forest_bayesian_optimization.pkl`
+- `random_forest_optuna.pkl`
+- `xgboost_grid_search.pkl`
+- ... (12 models in total)
 
 ### 4. Logs
-
 `results/logs/` directory:
+- `experiment_YYYYMMDD_HHMMSS.log`: Detailed execution logs
 
-* `experiment_YYYYMMDD_HHMMSS.log`: Detailed execution logs
+---
 
 ## 📈 Result Interpretation
 
 ### HPO Methods Comparison
-
 1. **Grid Search**
-* Pros: Exhaustive search, high reproducibility
-* Cons: Time-consuming
-* Best for: Small parameter spaces
-
+   - **Pros**: Exhaustive search, high reproducibility
+   - **Cons**: Time-consuming
+   - **Best for**: Small parameter spaces
 
 2. **Random Search**
-* Pros: Fast execution, reasonable performance
-* Cons: Optimal point not guaranteed
-* Best for: Establishing a quick baseline
-
+   - **Pros**: Fast execution, reasonable performance
+   - **Cons**: Optimal point not guaranteed
+   - **Best for**: Establishing a quick baseline
 
 3. **Bayesian Optimization**
-* Pros: Efficient search, good performance
-* Cons: Complex implementation
-* Best for: Medium-scale search spaces
-
+   - **Pros**: Efficient search, good performance
+   - **Cons**: Complex implementation
+   - **Best for**: Medium-scale search spaces
 
 4. **Optuna**
-* Pros: Highly efficient, fast due to pruning
-* Cons: Requires initial setup
-* Best for: Large-scale hyperparameter search
-
-
+   - **Pros**: Highly efficient, fast due to pruning
+   - **Cons**: Requires initial setup
+   - **Best for**: Large-scale hyperparameter search
 
 ### Evaluation Metrics
+- **Test Accuracy**: Accuracy on the test dataset
+- **CV Score**: Cross-validation score
+- **Search Time**: Time taken for HPO search
+- **F1 Score**: Harmonic mean of Precision and Recall
+- **Confusion Matrix**: Classification performance per class
 
-* **Test Accuracy**: Accuracy on the test dataset
-* **CV Score**: Cross-validation score
-* **Search Time**: Time taken for HPO search
-* **F1 Score**: Harmonic mean of Precision and Recall
-* **Confusion Matrix**: Classification performance per class
+---
 
 ## 🔧 Customization
 
 ### Adding a New Model
-
 1. Create a new model file in the `models/` directory.
 2. Add model configuration to `config/hpo_config.yaml`.
 3. Add execution logic to `experiments/experiment_runner.py`.
 
 ### Modifying Hyperparameter Ranges
-
 Edit the `hyperparameters` section in `config/hpo_config.yaml`:
-
 ```yaml
 hyperparameters:
   cnn:
     optuna:
       learning_rate: [0.0001, 0.01]  # Adjust range
       epochs: [10, 50]               # Adjust range
-
 ```
 
 ### Changing the Dataset
-
 Modify `data/data_loader.py` to load a different dataset.
+
+---
 
 ## 📝 Reproducing Experiments
 
 To achieve the exact same results:
-
 1. Maintain `seed: 42` in `config/hpo_config.yaml`.
 2. Use the same package versions (`requirements.txt`).
 3. Maintain the same execution order.
 
+---
+
 ## 🐛 Troubleshooting
 
 ### Out of Memory (OOM)
-
-* Decrease `batch_size` in `config/hpo_config.yaml`.
-* Decrease the number of CNN epochs.
-* Run experiments sequentially.
+- Decrease `batch_size` in `config/hpo_config.yaml`.
+- Decrease the number of CNN epochs.
+- Run experiments sequentially.
 
 ### Execution Timeout
-
-* Reduce Grid Search parameter ranges.
-* Decrease `n_trials`/`n_iter` for Optuna/Random Search.
-* Increase overall `timeout`.
+- Reduce Grid Search parameter ranges.
+- Decrease `n_trials`/`n_iter` for Optuna/Random Search.
+- Increase overall `timeout`.
 
 ### Package Installation Errors
-
-```powershell
+```bash
 # PyTorch installation (depends on your CUDA version)
-pip install torch torchvision --index-url [https://download.pytorch.org/whl/cu118](https://download.pytorch.org/whl/cu118)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 
 # Scikit-optimize installation issue
 pip install scikit-optimize --no-deps
 pip install scipy scikit-learn
-
 ```
+
+---
 
 ## 📚 References
 
 ### HPO Methods
-
-* [Optuna Documentation](https://optuna.readthedocs.io/)
-* [Scikit-Optimize](https://scikit-optimize.github.io/)
-* [Hyperparameter Optimization Survey](https://arxiv.org/abs/1810.05934)
+- [Optuna Documentation](https://optuna.readthedocs.io/)
+- [Scikit-Optimize](https://scikit-optimize.github.io/)
+- [Hyperparameter Optimization Survey](https://arxiv.org/abs/1810.05934)
 
 ### Models
+- [PyTorch Documentation](https://pytorch.org/docs/stable/index.html)
+- [TorchVision Documentation](https://pytorch.org/vision/stable/index.html)
+- [Scikit-learn Documentation](https://scikit-learn.org/)
+- [XGBoost Documentation](https://xgboost.readthedocs.io/)
 
-* [PyTorch Documentation](https://pytorch.org/docs/stable/index.html)
-* [TorchVision Documentation](https://pytorch.org/vision/stable/index.html)
-* [Scikit-learn Documentation](https://scikit-learn.org/)
-* [XGBoost Documentation](https://xgboost.readthedocs.io/)
+---
 
 ## 📄 License
 
@@ -293,14 +275,8 @@ This project is freely available for educational and research purposes.
 
 Bug reports, feature suggestions, and Pull Requests are welcome!
 
----
+<br>
 
-**Start Experiment**: `python main.py`
-
-**Estimated Time**: Approx. 3-5 hours (depending on hardware)
-
-**Check Results**: `results/summary_report.txt`
-
-```
-
-```
+> **Start Experiment**: `python main.py`  
+> **Estimated Time**: Approx. 3-5 hours (depending on hardware)  
+> **Check Results**: `results/summary_report.txt`
